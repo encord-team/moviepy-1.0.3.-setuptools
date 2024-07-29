@@ -7,7 +7,6 @@ from codecs import open
 
 try:
     from setuptools import find_packages, setup
-    from setuptools.command.test import test as TestCommand
 except ImportError:
     try:
         import ez_setup
@@ -17,36 +16,7 @@ except ImportError:
             ' neither setuptools nor ez_setup are installed on this computer.'
             '\nInstall ez_setup ([sudo] pip install ez_setup) and try again.')
 
-
-class PyTest(TestCommand):
-    """Handle test execution from setup."""
-
-    user_options = [('pytest-args=', 'a', "Arguments to pass into pytest")]
-
-    def initialize_options(self):
-        """Initialize the PyTest options."""
-        TestCommand.initialize_options(self)
-        self.pytest_args = ""
-
-    def finalize_options(self):
-        """Finalize the PyTest options."""
-        TestCommand.finalize_options(self)
-        self.test_args = []
-        self.test_suite = True
-
-    def run_tests(self):
-        """Run the PyTest testing suite."""
-        try:
-            import pytest
-        except ImportError:
-            raise ImportError('Running tests requires additional dependencies.'
-                '\nPlease run (pip install moviepy[test])')
-
-        errno = pytest.main(self.pytest_args.split(" "))
-        sys.exit(errno)
-
-
-cmdclass = {'test': PyTest} # Define custom commands.
+cmdclass = {} # Define custom commands.
 
 if 'build_docs' in sys.argv:
     try:
